@@ -3,6 +3,7 @@ package com.blacklane.mahmoudfaragallah.blacklane_task;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search your data somehow
+
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
 
             Log.d(TAG, "query : " + query);
             Toast.makeText(this, "query : " + query, Toast.LENGTH_SHORT).show();
