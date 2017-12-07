@@ -14,5 +14,4 @@ public class SearchHistoryProvider extends SearchRecentSuggestionsProvider {
     public SearchHistoryProvider() {
         setupSuggestions(AUTHORITY, MODE);
     }
-
 }
