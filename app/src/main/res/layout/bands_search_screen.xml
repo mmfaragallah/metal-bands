@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.blacklane.mahmoudfaragallah.blacklane_task.MainActivity">
+    tools:context="com.blacklane.mahmoudfaragallah.blacklane_task.bands_search.BandsSearchScreen">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bands_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

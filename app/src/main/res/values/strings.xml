@@ -6,4 +6,8 @@
 
     <string name="search_hint">Search Bands</string>
 
+    <string name="band_name">Band name</string>
+    <string name="band_genre">Band genre</string>
+    <string name="band_country">Band country</string>
+
 </resources>

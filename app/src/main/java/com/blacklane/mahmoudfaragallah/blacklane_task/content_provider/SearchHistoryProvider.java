@@ -1,4 +1,4 @@
-package com.blacklane.mahmoudfaragallah.blacklane_task;
+package com.blacklane.mahmoudfaragallah.blacklane_task.content_provider;
 
 import android.content.SearchRecentSuggestionsProvider;
 
