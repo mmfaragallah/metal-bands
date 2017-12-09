@@ -18,9 +18,11 @@ public class BandInfo {
     @SerializedName("years active")
     private String yearsActive;
 
+    @SerializedName("lyrical themes")
+    private String lyricalThemes;
+
     @SerializedName("country of origin")
     private String countryOfOrigin;
-
     public String getGenre() {
         return genre;
     }
@@ -67,5 +69,13 @@ public class BandInfo {
 
     public void setCountryOfOrigin(String countryOfOrigin) {
         this.countryOfOrigin = countryOfOrigin;
+    }
+
+    public String getLyricalThemes() {
+        return lyricalThemes;
+    }
+
+    public void setLyricalThemes(String lyricalThemes) {
+        this.lyricalThemes = lyricalThemes;
     }
 }
