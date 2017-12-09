@@ -18,14 +18,18 @@ import retrofit2.Response;
 
 public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
+    //region objects
     private BandsSearchContract.View bandsListView;
+    //end region
 
+    //region constructors
     public BandsSearchPresenter(BandsSearchContract.View bandsListView) {
         this.bandsListView = bandsListView;
     }
+    //endregion
 
     @Override
-    public void searchBands(String query) {
+    public void searchBands(final String query) {
 
         BandsService bandsService = RetrofitHandler.getInstance().createBandsService();
 
@@ -35,6 +39,8 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
             @Override
             public void onResponse(Call<SearchAPIResponse> call, Response<SearchAPIResponse> response) {
 
+                boolean hasAResult = false;
+
                 if (response.isSuccessful()) {
 
                     SearchAPIResponse resultsBody = response.body();
@@ -43,11 +49,17 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                         if (results != null) {
                             List<MetalBand> bands = results.getBands();
                             if (bands != null && bands.size() > 0) {
+                                hasAResult = true;
                                 bandsListView.setBandsList(bands);
                             }
                         }
                     }
+
+                    if (!hasAResult) {
+                        bandsListView.noSearchResults(query);
+                    }
                 }
+
             }
 
             @Override

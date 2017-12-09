@@ -11,7 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import com.blacklane.mahmoudfaragallah.blacklane_task.BandsListAdapter;
 import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.base.BaseActivity;
 import com.blacklane.mahmoudfaragallah.blacklane_task.content_provider.SearchHistoryProvider;
@@ -32,7 +31,9 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region objects
+    private BandsListAdapter listAdapter;
     private BandsSearchContract.Presenter presenter;
+    private BandsSearchContract.Router bandsListRouter;
     //endregion
 
     @Override
@@ -44,12 +45,14 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
     @Override
     protected int getLayout() {
-        return R.layout.bands_search_screen;
+        return R.layout.activity_bands_search_screen;
     }
 
     @Override
     protected void initializeObjects() {
         presenter = new BandsSearchPresenter(this);
+        listAdapter = new BandsListAdapter(this);
+        bandsListRouter = new BandsSearchRouter(this);
     }
 
     @Override
@@ -58,16 +61,28 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
         // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
         bandsListView.setHasFixedSize(true);
         bandsListView.setLayoutManager(new LinearLayoutManager(this));
+        bandsListView.setAdapter(listAdapter);
     }
 
-
+    //region view callbacks
     @Override
     public void setBandsList(List<MetalBand> bands) {
 
-        LogUtil.debug(CLASS_NAME, "[setBandsList] bands: " + bands);
+        LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
 
-        bandsListView.setAdapter(new BandsListAdapter(this, bands));
+        listAdapter.updateBandsList(bands);
     }
+
+    @Override
+    public void noSearchResults(String query) {
+        LogUtil.showToast(BandsSearchScreen.this, "There are no search results for query: " + query);
+    }
+
+    @Override
+    public void onBandClick(String bandId) {
+        bandsListRouter.goToBandDetailsScreen(bandId);
+    }
+    //endregion
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

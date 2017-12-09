@@ -15,6 +15,15 @@ public class BandsSearchContract {
     }
 
     interface View {
+
         void setBandsList(List<MetalBand> bands);
+
+        void noSearchResults(String query);
+
+        void onBandClick(String bandId);
+    }
+
+    interface Router {
+        void goToBandDetailsScreen(String bandId);
     }
 }

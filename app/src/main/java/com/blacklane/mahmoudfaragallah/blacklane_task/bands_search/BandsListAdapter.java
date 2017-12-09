@@ -1,14 +1,15 @@
-package com.blacklane.mahmoudfaragallah.blacklane_task;
+package com.blacklane.mahmoudfaragallah.blacklane_task.bands_search;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.MetalBand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,13 +21,16 @@ import butterknife.ButterKnife;
 
 public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.ViewHolder> implements View.OnClickListener {
 
-    private Context context;
+    //region objects
+    private BandsSearchContract.View bandsListView;
     private List<MetalBand> bands;
+    //endregion
 
-    public BandsListAdapter(Context context, List<MetalBand> bands) {
-        this.context = context;
-        this.bands = bands;
+    public BandsListAdapter(BandsSearchContract.View bandsListView) {
+        this.bands = new ArrayList<>();
+        this.bandsListView = bandsListView;
     }
+
 
     /**
      * @param parent
@@ -57,7 +61,7 @@ public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.View
         viewHolder.genre.setText(band.getGenre());
         viewHolder.country.setText(band.getCountry());
 
-        viewHolder.itemView.setTag(band.getName());
+        viewHolder.itemView.setTag(band.getId());
     }
 
     /**
@@ -66,8 +70,8 @@ public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.View
     @Override
     public void onClick(View view) {
 
-//        String vehicleId = (String) view.getTag();
-//        UIManager.goToGoogleMapScreen(context, bands, vehicleId);
+        String bandId = (String) view.getTag();
+        bandsListView.onBandClick(bandId);
     }
 
     /**
@@ -98,6 +102,17 @@ public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.View
         }
     }
 
+    /**
+     * @param bands
+     */
+    public void updateBandsList(List<MetalBand> bands) {
+        this.bands = bands;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * @return
+     */
     @Override
     public int getItemCount() {
         return bands.size();
