@@ -11,5 +11,6 @@
     <string name="band_country">Country of origin:</string>
     <string name="band_lyrical_themes">Lyrical themes:</string>
     <string name="band_years_of_activity">Years active:</string>
+    <string name="band_albums">Complete discography:</string>
 
 </resources>

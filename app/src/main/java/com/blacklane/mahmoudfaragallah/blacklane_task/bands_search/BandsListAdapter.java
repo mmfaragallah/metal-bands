@@ -31,7 +31,6 @@ public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.View
         this.bandsListView = bandsListView;
     }
 
-
     /**
      * @param parent
      * @param viewType

@@ -47,7 +47,20 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
                         BandDetailsData results = resultsBody.getResponseData();
 
                         hasAResult = true;
-                        bandDetailsView.setBandDetailsData(results);
+
+                        bandDetailsView.bindBandName(results.getBandName());
+
+                        if (results.getBandInfo() != null) {
+                            bandDetailsView.bindBandInfo(results.getBandInfo());
+                        }
+
+                        if (results.getBandPhoto() != null) {
+                            bandDetailsView.bindBandPhoto(results.getBandPhoto());
+                        }
+
+                        if (results.getAlbums() != null && results.getAlbums().size() > 0) {
+                            bandDetailsView.bindBandAlbumsList(results.getAlbums());
+                        }
                     }
 
                     if (!hasAResult) {
