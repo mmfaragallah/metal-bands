@@ -1,9 +1,16 @@
 package com.blacklane.mahmoudfaragallah.blacklane_task.band_details;
 
+import android.widget.ImageView;
+
 import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.base.BaseActivity;
+import com.blacklane.mahmoudfaragallah.blacklane_task.glide.GlideApp;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.BandDetailsData;
 import com.blacklane.mahmoudfaragallah.blacklane_task.util.LogUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import butterknife.BindView;
 
 public class BandDetailsScreen extends BaseActivity implements BandDetailsContract.View {
 
@@ -15,6 +22,14 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     private String bandId;
     private BandDetailsData bandDetails;
     private BandDetailsContract.Presenter presenter;
+    //endregion
+
+    //region screen views
+    @BindView(R.id.band_logo)
+    ImageView bandLogo;
+
+    @BindView(R.id.band_photo)
+    ImageView bandPhoto;
     //endregion
 
     //region BaseActivity methods
@@ -43,6 +58,19 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
 
     @Override
     public void setBandDetailsData(BandDetailsData bandDetailsData) {
+
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.drawable.progress_animation);
+
+        Glide.with(this)
+                .load(bandDetailsData.getBandLogo())
+                .apply(requestOptions)
+                .into(bandLogo);
+
+        GlideApp.with(this)
+                .load(bandDetailsData.getBandPhoto())
+                .apply(requestOptions)
+                .into(bandPhoto);
 
     }
     //endregion
