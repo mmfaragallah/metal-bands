@@ -14,7 +14,7 @@ import android.view.MenuInflater;
 import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.base.BaseActivity;
 import com.blacklane.mahmoudfaragallah.blacklane_task.content_provider.SearchHistoryProvider;
-import com.blacklane.mahmoudfaragallah.blacklane_task.model.MetalBand;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
 import com.blacklane.mahmoudfaragallah.blacklane_task.util.LogUtil;
 
 import java.util.List;
@@ -36,53 +36,13 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     private BandsSearchContract.Router bandsListRouter;
     //endregion
 
+    //region AppCompatActivity callback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        handleIntent(getIntent());
     }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_bands_search_screen;
-    }
-
-    @Override
-    protected void initializeObjects() {
-        presenter = new BandsSearchPresenter(this);
-        listAdapter = new BandsListAdapter(this);
-        bandsListRouter = new BandsSearchRouter(this);
-    }
-
-    @Override
-    protected void initializeViews() {
-
-        // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
-        bandsListView.setHasFixedSize(true);
-        bandsListView.setLayoutManager(new LinearLayoutManager(this));
-        bandsListView.setAdapter(listAdapter);
-    }
-
-    //region view callbacks
-    @Override
-    public void setBandsList(List<MetalBand> bands) {
-
-        LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
-
-        listAdapter.updateBandsList(bands);
-    }
-
-    @Override
-    public void noSearchResults(String query) {
-        LogUtil.showToast(BandsSearchScreen.this, "There are no search results for query: " + query);
-    }
-
-    @Override
-    public void onBandClick(String bandId) {
-        bandsListRouter.goToBandDetailsScreen(bandId);
-    }
-    //endregion
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,7 +92,52 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
 //        handleIntent(intent);
     }
+    //endregion
 
+    //region BaseActivity methods
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_bands_search_screen;
+    }
+
+    @Override
+    protected void initializeObjects() {
+        presenter = new BandsSearchPresenter(this);
+        listAdapter = new BandsListAdapter(this);
+        bandsListRouter = new BandsSearchRouter(this);
+    }
+
+    @Override
+    protected void initializeViews() {
+
+        // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+        bandsListView.setHasFixedSize(true);
+        bandsListView.setLayoutManager(new LinearLayoutManager(this));
+        bandsListView.setAdapter(listAdapter);
+    }
+    //endregion
+
+    //region view callbacks
+    @Override
+    public void setBandsList(List<MetalBand> bands) {
+
+        LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
+
+        listAdapter.updateBandsList(bands);
+    }
+
+    @Override
+    public void noSearchResults(String query) {
+        LogUtil.showToast(this, "There are no search results for query: " + query);
+    }
+
+    @Override
+    public void onBandClick(String bandId) {
+        bandsListRouter.goToBandDetailsScreen(bandId);
+    }
+    //endregion
+
+    //region private method
     private void handleIntent(Intent intent) {
 
         LogUtil.debug(CLASS_NAME, "[handleIntent]");
@@ -148,4 +153,5 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             LogUtil.showToast(this, "query : " + query);
         }
     }
+    //endregion
 }

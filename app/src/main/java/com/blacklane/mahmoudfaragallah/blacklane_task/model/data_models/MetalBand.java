@@ -1,4 +1,4 @@
-package com.blacklane.mahmoudfaragallah.blacklane_task.model;
+package com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models;
 
 /**
  * Created by Mahmoud on 08-12-2017.

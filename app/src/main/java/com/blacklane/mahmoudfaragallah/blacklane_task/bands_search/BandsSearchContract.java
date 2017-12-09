@@ -1,6 +1,6 @@
 package com.blacklane.mahmoudfaragallah.blacklane_task.bands_search;
 
-import com.blacklane.mahmoudfaragallah.blacklane_task.model.MetalBand;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Mahmoud on 08-12-2017.
  */
 
-public class BandsSearchContract {
+public interface BandsSearchContract {
 
     interface Presenter {
         void searchBands(String query);
@@ -16,11 +16,11 @@ public class BandsSearchContract {
 
     interface View {
 
-        void setBandsList(List<MetalBand> bands);
+        void onBandClick(String bandId);
 
         void noSearchResults(String query);
 
-        void onBandClick(String bandId);
+        void setBandsList(List<MetalBand> bands);
     }
 
     interface Router {

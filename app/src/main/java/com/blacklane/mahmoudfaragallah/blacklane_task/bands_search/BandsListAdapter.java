@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blacklane.mahmoudfaragallah.blacklane_task.R;
-import com.blacklane.mahmoudfaragallah.blacklane_task.model.MetalBand;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
 
 import java.util.ArrayList;
 import java.util.List;

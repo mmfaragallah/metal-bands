@@ -21,7 +21,7 @@ public class BandsSearchRouter implements BandsSearchContract.Router {
     public void goToBandDetailsScreen(String bandId) {
 
         Intent intent = new Intent(context, BandDetailsScreen.class);
-        intent.putExtra("", bandId);
+        intent.putExtra(BandDetailsScreen.BAND_ID, bandId);
         context.startActivity(intent);
     }
 }

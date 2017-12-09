@@ -1,4 +1,4 @@
-package com.blacklane.mahmoudfaragallah.blacklane_task.model;
+package com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Mahmoud on 08-12-2017.
  */
 
-public class SearchData {
+public class BandSearchData {
 
     private String query;
 

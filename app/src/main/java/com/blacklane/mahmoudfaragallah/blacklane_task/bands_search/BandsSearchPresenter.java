@@ -2,8 +2,8 @@ package com.blacklane.mahmoudfaragallah.blacklane_task.bands_search;
 
 import com.blacklane.mahmoudfaragallah.blacklane_task.backend.BandsService;
 import com.blacklane.mahmoudfaragallah.blacklane_task.backend.RetrofitHandler;
-import com.blacklane.mahmoudfaragallah.blacklane_task.model.MetalBand;
-import com.blacklane.mahmoudfaragallah.blacklane_task.model.SearchData;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.BandSearchData;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.SearchAPIResponse;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
     //region objects
     private BandsSearchContract.View bandsListView;
-    //end region
+    //endregion
 
     //region constructors
     public BandsSearchPresenter(BandsSearchContract.View bandsListView) {
@@ -28,6 +28,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
     }
     //endregion
 
+    //region presenter callbacks
     @Override
     public void searchBands(final String query) {
 
@@ -45,7 +46,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
                     SearchAPIResponse resultsBody = response.body();
                     if (resultsBody != null) {
-                        SearchData results = resultsBody.getResults();
+                        BandSearchData results = resultsBody.getResponseData();
                         if (results != null) {
                             List<MetalBand> bands = results.getBands();
                             if (bands != null && bands.size() > 0) {
@@ -59,13 +60,13 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                         bandsListView.noSearchResults(query);
                     }
                 }
-
             }
 
             @Override
             public void onFailure(Call<SearchAPIResponse> call, Throwable t) {
-
+                bandsListView.noSearchResults(query);
             }
         });
     }
+    //endregion
 }

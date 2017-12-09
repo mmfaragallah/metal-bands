@@ -1,5 +1,6 @@
 package com.blacklane.mahmoudfaragallah.blacklane_task.backend;
 
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.DetailsAPIResponse;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.SearchAPIResponse;
 
 import retrofit2.Call;
@@ -16,4 +17,7 @@ public interface BandsService {
 
     @GET("search/band_name/{search_query}?api_key=" + BANDS_API_KEY)
     Call<SearchAPIResponse> bandsSearch(@Path("search_query") String searchQuery);
+
+    @GET("band/{band_id}?api_key=" + BANDS_API_KEY)
+    Call<DetailsAPIResponse> getBandDetails(@Path("band_id") String bandId);
 }
