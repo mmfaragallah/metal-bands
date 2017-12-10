@@ -66,6 +66,9 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
                     if (!hasAResult) {
                         bandDetailsView.noDetailsResults(bandId);
                     }
+
+                } else {
+                    bandDetailsView.noDetailsResults(bandId);
                 }
             }
 

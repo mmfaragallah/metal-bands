@@ -6,6 +6,7 @@ import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.BandSear
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.SearchAPIResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,7 +31,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
     //region presenter callbacks
     @Override
-    public void searchBands(final String query) {
+    public Call<SearchAPIResponse> searchBands(final String query) {
 
         BandsService bandsService = RetrofitHandler.getInstance().createBandsService();
 
@@ -56,9 +57,14 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                         }
                     }
 
+                    // in case of no results, clear the previous results
                     if (!hasAResult) {
-                        bandsListView.noSearchResults(query);
+//                        bandsListView.noSearchResults(query);
+                        bandsListView.setBandsList(new ArrayList<MetalBand>());
                     }
+
+                } else {
+                    bandsListView.noSearchResults(query);
                 }
             }
 
@@ -67,6 +73,8 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                 bandsListView.noSearchResults(query);
             }
         });
+
+        return call;
     }
     //endregion
 }

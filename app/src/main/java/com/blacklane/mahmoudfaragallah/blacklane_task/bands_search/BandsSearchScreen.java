@@ -15,11 +15,13 @@ import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.base.BaseActivity;
 import com.blacklane.mahmoudfaragallah.blacklane_task.content_provider.SearchHistoryProvider;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.SearchAPIResponse;
 import com.blacklane.mahmoudfaragallah.blacklane_task.util.LogUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
+import retrofit2.Call;
 
 public class BandsSearchScreen extends BaseActivity implements BandsSearchContract.View {
 
@@ -31,6 +33,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region objects
+    private Call<SearchAPIResponse> currentSearchAPICall;
     private BandsListAdapter listAdapter;
     private BandsSearchContract.Presenter presenter;
     private BandsSearchContract.Router bandsListRouter;
@@ -65,7 +68,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
                 LogUtil.debug(CLASS_NAME, "[onQueryTextSubmit] query: " + query);
                 LogUtil.showToast(BandsSearchScreen.this, "query submit: " + query);
 
-                presenter.searchBands(query);
+//                Call<SearchAPIResponse> call = presenter.searchBands(query);
 
 //                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(MainActivity.this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
 //                suggestions.saveRecentQuery(query, null);
@@ -78,6 +81,12 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
                 LogUtil.debug(CLASS_NAME, "[onQueryTextChange] query: " + query);
 //                LogUtil.showToast(MainActivity.this, "query change: " + query);
+
+                if (currentSearchAPICall != null) {
+                    currentSearchAPICall.cancel();
+                }
+
+                currentSearchAPICall = presenter.searchBands(query);
 
                 return false;
             }
@@ -128,6 +137,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
     @Override
     public void noSearchResults(String query) {
+
         LogUtil.showToast(this, "There are no search results for query: " + query);
     }
 

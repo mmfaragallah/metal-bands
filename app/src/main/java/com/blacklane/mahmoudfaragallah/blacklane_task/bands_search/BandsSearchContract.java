@@ -1,8 +1,11 @@
 package com.blacklane.mahmoudfaragallah.blacklane_task.bands_search;
 
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.MetalBand;
+import com.blacklane.mahmoudfaragallah.blacklane_task.model.responses.SearchAPIResponse;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * Created by Mahmoud on 08-12-2017.
@@ -11,7 +14,7 @@ import java.util.List;
 public interface BandsSearchContract {
 
     interface Presenter {
-        void searchBands(String query);
+        Call<SearchAPIResponse> searchBands(String query);
     }
 
     interface View {
