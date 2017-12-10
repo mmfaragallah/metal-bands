@@ -3,10 +3,10 @@ package com.blacklane.mahmoudfaragallah.blacklane_task.band_details;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.blacklane.mahmoudfaragallah.blacklane_task.R;
 import com.blacklane.mahmoudfaragallah.blacklane_task.base.BaseActivity;
+import com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.BandAlbum;
 import com.blacklane.mahmoudfaragallah.blacklane_task.model.data_models.BandInfo;
 import com.blacklane.mahmoudfaragallah.blacklane_task.util.LogUtil;
@@ -33,19 +33,19 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     ImageView bandPhoto;
 
     @BindView(R.id.band_country)
-    TextView bandCountry;
+    KeyValueView bandCountry;
 
     @BindView(R.id.band_status)
-    TextView bandStatus;
+    KeyValueView bandStatus;
 
     @BindView(R.id.band_genre)
-    TextView bandGenre;
+    KeyValueView bandGenre;
 
     @BindView(R.id.band_lyrical_themes)
-    TextView bandLyricalThemes;
+    KeyValueView bandLyricalThemes;
 
     @BindView(R.id.band_years_of_activity)
-    TextView bandYearsOfActivity;
+    KeyValueView bandYearsOfActivity;
 
     @BindView(R.id.albums_list)
     RecyclerView albumsListView;
@@ -98,11 +98,11 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
 
     @Override
     public void bindBandInfo(BandInfo bandInfo) {
-        bandCountry.setText(bandInfo.getCountryOfOrigin());
-        bandStatus.setText(bandInfo.getStatus());
-        bandGenre.setText(bandInfo.getGenre());
-        bandLyricalThemes.setText(bandInfo.getLyricalThemes());
-        bandYearsOfActivity.setText(bandInfo.getYearsActive());
+        bandCountry.setValue(bandInfo.getCountryOfOrigin());
+        bandStatus.setValue(bandInfo.getStatus());
+        bandGenre.setValue(bandInfo.getGenre());
+        bandLyricalThemes.setValue(bandInfo.getLyricalThemes());
+        bandYearsOfActivity.setValue(bandInfo.getYearsActive());
     }
 
     @Override
