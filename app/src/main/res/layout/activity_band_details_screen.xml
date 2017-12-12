@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/dimen_8"
     android:orientation="vertical"
-    tools:context="com.blacklane.mahmoudfaragallah.blacklane_task.band_details.BandDetailsScreen">
+    tools:context="com.metalbands.mahmoudfaragallah.band_details.BandDetailsScreen">
 
     <ImageView
         android:id="@+id/band_photo"
@@ -26,37 +26,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:id="@+id/band_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_country" />
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:id="@+id/band_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_status" />
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:id="@+id/band_genre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_genre" />
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:id="@+id/band_lyrical_themes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_lyrical_themes" />
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:id="@+id/band_years_of_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_years_of_activity" />
 
-            <com.blacklane.mahmoudfaragallah.blacklane_task.custom_views.KeyValueView
+            <com.metalbands.mahmoudfaragallah.custom_views.KeyValueView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="@string/band_albums" />
