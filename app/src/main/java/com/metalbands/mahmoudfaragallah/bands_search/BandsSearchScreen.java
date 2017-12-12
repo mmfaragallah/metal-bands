@@ -16,7 +16,9 @@ import com.metalbands.mahmoudfaragallah.base.BaseActivity;
 import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
 import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
+import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
 import com.metalbands.mahmoudfaragallah.util.LogUtil;
+import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
 
 import java.util.List;
 
@@ -25,7 +27,9 @@ import retrofit2.Call;
 
 public class BandsSearchScreen extends BaseActivity implements BandsSearchContract.View {
 
+    //region constants
     private final static String CLASS_NAME = BandsSearchScreen.class.getSimpleName();
+    //endregion
 
     //region screen views
     private SearchView searchView;
@@ -89,6 +93,8 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             }
         });
 
+        checkLatestSearchedQuery();
+
         return true;
     }
 
@@ -132,6 +138,8 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
         if (bands.size() > 0) {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
             suggestions.saveRecentQuery(forQuery, null);
+
+            SharedPrefUtility.getInstance().saveSetting(this, ApplicationConstants.LATEST_SEARCHED_QUERY, forQuery);
         }
     }
 
@@ -161,6 +169,9 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
         currentSearchAPICall = presenter.searchBands(query);
     }
 
+    /**
+     * @param intent
+     */
     private void handleIntent(Intent intent) {
 
         LogUtil.debug(CLASS_NAME, "[handleIntent]");
@@ -172,6 +183,17 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             LogUtil.showToast(this, "[handleIntent] query: " + query);
 
             searchView.setQuery(query, false);
+        }
+    }
+
+    /**
+     *
+     */
+    private void checkLatestSearchedQuery() {
+
+        String latestSearchedQuery = SharedPrefUtility.getInstance().getSettingString(this, ApplicationConstants.LATEST_SEARCHED_QUERY);
+        if (latestSearchedQuery != null) {
+            searchView.setQuery(latestSearchedQuery, false);
         }
     }
     //endregion

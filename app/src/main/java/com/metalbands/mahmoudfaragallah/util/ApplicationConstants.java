@@ -10,4 +10,8 @@ public interface ApplicationConstants {
     String PROJECT_TAG = "metalbands_app";
 
     boolean DEVELOPMENT_MODE = BuildConfig.DEBUG;
+
+    //region Shared Preferences items
+    String LATEST_SEARCHED_QUERY = "LATEST_SEARCHED_QUERY";
+    //endregion
 }
