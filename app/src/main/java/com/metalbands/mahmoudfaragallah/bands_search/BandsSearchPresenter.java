@@ -52,7 +52,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                             List<MetalBand> bands = results.getBands();
                             if (bands != null && bands.size() > 0) {
                                 hasAResult = true;
-                                bandsListView.setBandsList(bands);
+                                bandsListView.setBandsList(bands, query);
                             }
                         }
                     }
@@ -60,7 +60,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                     // in case of no results, clear the previous results
                     if (!hasAResult) {
 //                        bandsListView.noSearchResults(query);
-                        bandsListView.setBandsList(new ArrayList<MetalBand>());
+                        bandsListView.setBandsList(new ArrayList<MetalBand>(), query);
                     }
 
                 } else {

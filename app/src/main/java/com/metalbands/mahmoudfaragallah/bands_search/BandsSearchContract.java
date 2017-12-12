@@ -23,7 +23,7 @@ public interface BandsSearchContract {
 
         void noSearchResults(String query);
 
-        void setBandsList(List<MetalBand> bands);
+        void setBandsList(List<MetalBand> bands, String forQuery);
     }
 
     interface Router {

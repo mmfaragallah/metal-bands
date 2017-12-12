@@ -28,6 +28,8 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     private final static String CLASS_NAME = BandsSearchScreen.class.getSimpleName();
 
     //region screen views
+    private SearchView searchView;
+
     @BindView(R.id.bands_list)
     RecyclerView bandsListView;
     //endregion
@@ -44,7 +46,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        handleIntent(getIntent());
+        handleIntent(getIntent());
     }
 
     @Override
@@ -56,7 +58,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 //        searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
@@ -66,9 +68,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             public boolean onQueryTextSubmit(String query) {
 
                 LogUtil.debug(CLASS_NAME, "[onQueryTextSubmit] query: " + query);
-                LogUtil.showToast(BandsSearchScreen.this, "query submit: " + query);
-
-//                Call<SearchAPIResponse> call = presenter.searchBands(query);
+                LogUtil.showToast(BandsSearchScreen.this, "[onQueryTextSubmit] query: " + query);
 
 //                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(MainActivity.this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
 //                suggestions.saveRecentQuery(query, null);
@@ -82,25 +82,21 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
                 LogUtil.debug(CLASS_NAME, "[onQueryTextChange] query: " + query);
 //                LogUtil.showToast(MainActivity.this, "query change: " + query);
 
-                if (currentSearchAPICall != null) {
-                    currentSearchAPICall.cancel();
-                }
-
-                currentSearchAPICall = presenter.searchBands(query);
+                //use the query to perform the search
+                performSearch(query);
 
                 return false;
             }
         });
-
 
         return true;
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-
-//        handleIntent(intent);
+        handleIntent(intent);
     }
+
     //endregion
 
     //region BaseActivity methods
@@ -128,11 +124,15 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
     //region view callbacks
     @Override
-    public void setBandsList(List<MetalBand> bands) {
+    public void setBandsList(List<MetalBand> bands, String forQuery) {
 
         LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
-
         listAdapter.updateBandsList(bands);
+
+        if (bands.size() > 0) {
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
+            suggestions.saveRecentQuery(forQuery, null);
+        }
     }
 
     @Override
@@ -148,19 +148,30 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region private method
+
+    /**
+     * @param query
+     */
+    private void performSearch(String query) {
+
+        if (currentSearchAPICall != null) {
+            currentSearchAPICall.cancel();
+        }
+
+        currentSearchAPICall = presenter.searchBands(query);
+    }
+
     private void handleIntent(Intent intent) {
 
         LogUtil.debug(CLASS_NAME, "[handleIntent]");
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
             String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
+            LogUtil.debug(CLASS_NAME, "[handleIntent] query: " + query);
+            LogUtil.showToast(this, "[handleIntent] query: " + query);
 
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
-            suggestions.saveRecentQuery(query, null);
-
-            LogUtil.debug(CLASS_NAME, "query : " + query);
-            LogUtil.showToast(this, "query : " + query);
+            searchView.setQuery(query, false);
         }
     }
     //endregion
