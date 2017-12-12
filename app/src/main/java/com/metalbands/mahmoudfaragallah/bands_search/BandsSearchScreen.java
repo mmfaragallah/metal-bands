@@ -113,7 +113,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
     @Override
     protected void initializeObjects() {
-        presenter = new BandsSearchPresenter(this);
+        presenter = new BandsSearchPresenter(this, this.getCacheDir());
         listAdapter = new BandsListAdapter(this);
         bandsListRouter = new BandsSearchRouter(this);
     }

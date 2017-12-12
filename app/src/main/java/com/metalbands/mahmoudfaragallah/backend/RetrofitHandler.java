@@ -2,10 +2,15 @@ package com.metalbands.mahmoudfaragallah.backend;
 
 import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
 
+import java.io.File;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.metalbands.mahmoudfaragallah.util.ApplicationConstants.cacheSize;
 
 /**
  * Created by Mahmoud on 07-12-2017.
@@ -24,33 +29,37 @@ public class RetrofitHandler {
     //endregion
 
     //region Constructor
-    private RetrofitHandler() {
+    private RetrofitHandler(File cacheDir) {
 
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
+        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         if (ApplicationConstants.DEVELOPMENT_MODE) {
             // Add HttpLoggingInterceptor
-            if (!client.interceptors().contains(loggingInterceptor)) {
-                client.addInterceptor(loggingInterceptor);
+            if (!okHttpClient.interceptors().contains(loggingInterceptor)) {
+                okHttpClient.addInterceptor(loggingInterceptor);
             }
         }
-        retrofit = new Retrofit
-                .Builder()
+
+        // add the cache feature to the APIs requests
+        Cache cache = new Cache(cacheDir, cacheSize);
+        okHttpClient.cache(cache);
+
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client.build())
+                .client(okHttpClient.build())
                 .build();
     }
     //endregion
 
     //region Public Methods
 
-    public static RetrofitHandler getInstance() {
+    public static RetrofitHandler getInstance(File cacheDir) {
 
         if (instance == null) {
-            instance = new RetrofitHandler();
+            instance = new RetrofitHandler(cacheDir);
         }
 
         return instance;

@@ -5,6 +5,8 @@ import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandDetailsData;
 import com.metalbands.mahmoudfaragallah.model.responses.DetailsAPIResponse;
 
+import java.io.File;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,11 +18,13 @@ import retrofit2.Response;
 public class BandDetailsPresenter implements BandDetailsContract.Presenter {
 
     //region objects
+    private File cacheDir;
     private BandDetailsContract.View bandDetailsView;
     //endregion
 
     //region constructors
-    public BandDetailsPresenter(BandDetailsContract.View bandDetailsView) {
+    public BandDetailsPresenter(BandDetailsContract.View bandDetailsView, File cacheDir) {
+        this.cacheDir = cacheDir;
         this.bandDetailsView = bandDetailsView;
     }
     //endregion
@@ -31,7 +35,7 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
 
         bandDetailsView.showProgressDialog();
 
-        BandsService bandsService = RetrofitHandler.getInstance().createBandsService();
+        BandsService bandsService = RetrofitHandler.getInstance(cacheDir).createBandsService();
 
         Call<DetailsAPIResponse> call = bandsService.getBandDetails(bandId);
 

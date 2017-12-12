@@ -64,7 +64,7 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
         listAdapter = new AlbumsListAdapter();
         bandId = getIntent().getStringExtra(BAND_ID);
         progressDialog = new ProgressDialogFragment();
-        presenter = new BandDetailsPresenter(this);
+        presenter = new BandDetailsPresenter(this, this.getCacheDir());
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.metalbands.mahmoudfaragallah.model.data_models.BandSearchData;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
 import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,13 @@ import retrofit2.Response;
 public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
     //region objects
+    private File cacheDir;
     private BandsSearchContract.View bandsListView;
     //endregion
 
     //region constructors
-    public BandsSearchPresenter(BandsSearchContract.View bandsListView) {
+    public BandsSearchPresenter(BandsSearchContract.View bandsListView, File cacheDir) {
+        this.cacheDir = cacheDir;
         this.bandsListView = bandsListView;
     }
     //endregion
@@ -33,7 +36,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
     @Override
     public Call<SearchAPIResponse> searchBands(final String query) {
 
-        BandsService bandsService = RetrofitHandler.getInstance().createBandsService();
+        BandsService bandsService = RetrofitHandler.getInstance(cacheDir).createBandsService();
 
         Call<SearchAPIResponse> call = bandsService.bandsSearch(query);
 

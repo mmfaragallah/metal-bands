@@ -14,4 +14,7 @@ public interface ApplicationConstants {
     //region Shared Preferences items
     String LATEST_SEARCHED_QUERY = "LATEST_SEARCHED_QUERY";
     //endregion
+
+    // API Cache size
+    int cacheSize = 10 * 1024 * 1024; // 10 MB
 }
