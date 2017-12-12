@@ -62,8 +62,11 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
                             bandDetailsView.bindBandInfo(results.getBandInfo());
                         }
 
+                        // load the band photo if exists, if not load the band logo if exists
                         if (results.getBandPhoto() != null) {
                             bandDetailsView.bindBandPhoto(results.getBandPhoto());
+                        } else if (results.getBandLogo() != null) {
+                            bandDetailsView.bindBandPhoto(results.getBandLogo());
                         }
 
                         if (results.getAlbums() != null && results.getAlbums().size() > 0) {
