@@ -17,6 +17,10 @@ public interface BandDetailsContract {
 
     interface View {
 
+        void showProgressDialog();
+
+        void dismissProgressDialog();
+
         void noDetailsResults(String bandId);
 
         void bindBandPhoto(String bandPhotoUrl);

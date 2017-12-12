@@ -29,6 +29,8 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
     @Override
     public void getBandById(final String bandId) {
 
+        bandDetailsView.showProgressDialog();
+
         BandsService bandsService = RetrofitHandler.getInstance().createBandsService();
 
         Call<DetailsAPIResponse> call = bandsService.getBandDetails(bandId);
@@ -36,6 +38,8 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
         call.enqueue(new Callback<DetailsAPIResponse>() {
             @Override
             public void onResponse(Call<DetailsAPIResponse> call, Response<DetailsAPIResponse> response) {
+
+                bandDetailsView.dismissProgressDialog();
 
                 boolean hasAResult = false;
 
@@ -74,6 +78,9 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
 
             @Override
             public void onFailure(Call<DetailsAPIResponse> call, Throwable t) {
+
+                bandDetailsView.dismissProgressDialog();
+
                 bandDetailsView.noDetailsResults(bandId);
             }
         });

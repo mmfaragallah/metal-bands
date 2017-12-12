@@ -10,6 +10,7 @@ import com.metalbands.mahmoudfaragallah.custom_views.KeyValueView;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandAlbum;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandInfo;
 import com.metalbands.mahmoudfaragallah.util.LogUtil;
+import com.metalbands.mahmoudfaragallah.util.ProgressDialogFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     //region objects
     private String bandId;
     private AlbumsListAdapter listAdapter;
+    private ProgressDialogFragment progressDialog;
     private BandDetailsContract.Presenter presenter;
     //endregion
 
@@ -59,13 +61,15 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
 
     @Override
     protected void initializeObjects() {
-        bandId = getIntent().getStringExtra(BAND_ID);
         listAdapter = new AlbumsListAdapter();
+        bandId = getIntent().getStringExtra(BAND_ID);
+        progressDialog = new ProgressDialogFragment();
         presenter = new BandDetailsPresenter(this);
     }
 
     @Override
     protected void initializeViews() {
+
         presenter.getBandById(bandId);
 
         // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
@@ -75,7 +79,18 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     }
     //endregion
 
+
     //region view callbacks
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show(getSupportFragmentManager(), "tag");
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressDialog.dismiss();
+    }
+
     @Override
     public void noDetailsResults(String bandId) {
         LogUtil.showToast(this, "There are no details record for band id: " + bandId);
