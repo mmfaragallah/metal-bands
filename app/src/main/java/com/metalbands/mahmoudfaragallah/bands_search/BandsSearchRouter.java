@@ -3,6 +3,7 @@ package com.metalbands.mahmoudfaragallah.bands_search;
 import android.content.Context;
 import android.content.Intent;
 
+import com.metalbands.mahmoudfaragallah.band_details.BandDetailsPresenter;
 import com.metalbands.mahmoudfaragallah.band_details.BandDetailsScreen;
 
 /**
@@ -26,7 +27,7 @@ public class BandsSearchRouter implements BandsSearchContract.Router {
     public void goToBandDetailsScreen(String bandId) {
 
         Intent intent = new Intent(context, BandDetailsScreen.class);
-        intent.putExtra(BandDetailsScreen.BAND_ID, bandId);
+        intent.putExtra(BandDetailsPresenter.BAND_ID, bandId);
         context.startActivity(intent);
     }
     //endregion

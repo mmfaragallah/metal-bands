@@ -11,7 +11,10 @@ import java.util.List;
 public interface BandsSearchContract {
 
     interface Presenter {
+
         void searchBands(String query);
+
+        void checkLatestSearchedQuery();
     }
 
     interface View {
@@ -19,6 +22,8 @@ public interface BandsSearchContract {
         void onBandClick(String bandId);
 
         void noSearchResults(String query);
+
+        void updateSearchViewText(String query);
 
         void setBandsList(List<MetalBand> bands, String forQuery);
     }

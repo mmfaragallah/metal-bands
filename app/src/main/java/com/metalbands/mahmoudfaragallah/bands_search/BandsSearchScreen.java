@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -13,11 +12,8 @@ import android.view.MenuInflater;
 
 import com.metalbands.mahmoudfaragallah.R;
 import com.metalbands.mahmoudfaragallah.base.BaseActivity;
-import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
-import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
 import com.metalbands.mahmoudfaragallah.util.LogUtil;
-import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
 
 import java.util.List;
 
@@ -71,9 +67,6 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
                 LogUtil.debug(CLASS_NAME, "[onQueryTextSubmit] query: " + query);
                 LogUtil.showToast(BandsSearchScreen.this, "[onQueryTextSubmit] query: " + query);
 
-//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(MainActivity.this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
-//                suggestions.saveRecentQuery(query, null);
-
                 return false;
             }
 
@@ -90,7 +83,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             }
         });
 
-        checkLatestSearchedQuery();
+        presenter.checkLatestSearchedQuery();
 
         return true;
     }
@@ -99,7 +92,6 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
-
     //endregion
 
     //region BaseActivity methods
@@ -110,9 +102,9 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
     @Override
     protected void initializeObjects() {
-        presenter = new BandsSearchPresenter(this, this.getCacheDir());
         listAdapter = new BandsListAdapter(this);
         bandsListRouter = new BandsSearchRouter(this);
+        presenter = new BandsSearchPresenter(this, this);
     }
 
     @Override
@@ -131,13 +123,6 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
         LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
         listAdapter.updateBandsList(bands);
-
-        if (bands.size() > 0) {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
-            suggestions.saveRecentQuery(forQuery, null);
-
-            SharedPrefUtility.getInstance().saveSetting(this, ApplicationConstants.LATEST_SEARCHED_QUERY, forQuery);
-        }
     }
 
     @Override
@@ -150,10 +135,17 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     public void onBandClick(String bandId) {
         bandsListRouter.goToBandDetailsScreen(bandId);
     }
+
+    /**
+     * @param query
+     */
+    @Override
+    public void updateSearchViewText(String query) {
+        searchView.setQuery(query, false);
+    }
     //endregion
 
     //region private method
-
     /**
      * @param query
      */
@@ -174,18 +166,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
             LogUtil.debug(CLASS_NAME, "[handleIntent] query: " + query);
             LogUtil.showToast(this, "[handleIntent] query: " + query);
 
-            searchView.setQuery(query, false);
-        }
-    }
-
-    /**
-     *
-     */
-    private void checkLatestSearchedQuery() {
-
-        String latestSearchedQuery = SharedPrefUtility.getInstance().getSettingString(this, ApplicationConstants.LATEST_SEARCHED_QUERY);
-        if (latestSearchedQuery != null) {
-            searchView.setQuery(latestSearchedQuery, false);
+            updateSearchViewText(query);
         }
     }
     //endregion

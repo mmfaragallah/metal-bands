@@ -19,12 +19,7 @@ import butterknife.BindView;
 
 public class BandDetailsScreen extends BaseActivity implements BandDetailsContract.View {
 
-    //region constants
-    public static final String BAND_ID = "band_id";
-    //endregion
-
     //region objects
-    private String bandId;
     private AlbumsListAdapter listAdapter;
     private ProgressDialogFragment progressDialog;
     private BandDetailsContract.Presenter presenter;
@@ -62,15 +57,14 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     @Override
     protected void initializeObjects() {
         listAdapter = new AlbumsListAdapter();
-        bandId = getIntent().getStringExtra(BAND_ID);
         progressDialog = new ProgressDialogFragment();
-        presenter = new BandDetailsPresenter(this, this.getCacheDir());
+        presenter = new BandDetailsPresenter(this, this);
     }
 
     @Override
     protected void initializeViews() {
 
-        presenter.getBandById(bandId);
+        presenter.getBandDetails();
 
         // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
         albumsListView.setHasFixedSize(true);

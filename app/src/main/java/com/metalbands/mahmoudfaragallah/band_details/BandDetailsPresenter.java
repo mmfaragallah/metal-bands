@@ -1,11 +1,12 @@
 package com.metalbands.mahmoudfaragallah.band_details;
 
+import android.app.Activity;
+
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
 import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
+import com.metalbands.mahmoudfaragallah.base.BasePresenter;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandDetailsData;
 import com.metalbands.mahmoudfaragallah.model.responses.DetailsAPIResponse;
-
-import java.io.File;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,27 +16,33 @@ import retrofit2.Response;
  * Created by Mahmoud on 09-12-2017.
  */
 
-public class BandDetailsPresenter implements BandDetailsContract.Presenter {
+public class BandDetailsPresenter extends BasePresenter implements BandDetailsContract.Presenter {
+
+    //region constants
+    public static final String BAND_ID = "band_id";
+    //endregion
 
     //region objects
-    private File cacheDir;
+    private String bandId;
     private BandDetailsContract.View bandDetailsView;
     //endregion
 
     //region constructors
-    BandDetailsPresenter(BandDetailsContract.View bandDetailsView, File cacheDir) {
-        this.cacheDir = cacheDir;
+    BandDetailsPresenter(Activity context, BandDetailsContract.View bandDetailsView) {
+        super(context);
+
+        this.bandId = getIntent().getStringExtra(BandDetailsPresenter.BAND_ID);
         this.bandDetailsView = bandDetailsView;
     }
     //endregion
 
     //region presenter callbacks
     @Override
-    public void getBandById(final String bandId) {
+    public void getBandDetails() {
 
         bandDetailsView.showProgressDialog();
 
-        BandsService bandsService = RetrofitHandler.getInstance(cacheDir).createBandsService();
+        BandsService bandsService = RetrofitHandler.getInstance(getContext().getCacheDir()).createBandsService();
 
         Call<DetailsAPIResponse> call = bandsService.getBandDetails(bandId);
 

@@ -1,12 +1,18 @@
 package com.metalbands.mahmoudfaragallah.bands_search;
 
+import android.app.Activity;
+import android.provider.SearchRecentSuggestions;
+
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
 import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
+import com.metalbands.mahmoudfaragallah.base.BasePresenter;
+import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandSearchData;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
 import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
+import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
+import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +24,16 @@ import retrofit2.Response;
  * Created by Mahmoud on 08-12-2017.
  */
 
-public class BandsSearchPresenter implements BandsSearchContract.Presenter {
+public class BandsSearchPresenter extends BasePresenter implements BandsSearchContract.Presenter {
 
     //region objects
-    private File cacheDir;
     private BandsSearchContract.View bandsListView;
     private Call<SearchAPIResponse> currentSearchAPICall;
     //endregion
 
     //region constructors
-    BandsSearchPresenter(BandsSearchContract.View bandsListView, File cacheDir) {
-        this.cacheDir = cacheDir;
+    BandsSearchPresenter(Activity context, BandsSearchContract.View bandsListView) {
+        super(context);
         this.bandsListView = bandsListView;
     }
     //endregion
@@ -39,6 +44,16 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
         checkCurrentSearchAPICall();
         performSearch(query);
+    }
+
+    @Override
+    public void checkLatestSearchedQuery() {
+
+        String latestSearchedQuery = SharedPrefUtility.getInstance().getSettingString(getContext(), ApplicationConstants.LATEST_SEARCHED_QUERY);
+
+        if (latestSearchedQuery != null) {
+            bandsListView.updateSearchViewText(latestSearchedQuery);
+        }
     }
     //endregion
 
@@ -59,7 +74,7 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
      */
     private void performSearch(final String query) {
 
-        BandsService bandsService = RetrofitHandler.getInstance(cacheDir).createBandsService();
+        BandsService bandsService = RetrofitHandler.getInstance(getContext().getCacheDir()).createBandsService();
 
         currentSearchAPICall = bandsService.bandsSearch(query);
 
@@ -79,6 +94,8 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                             if (bands != null && bands.size() > 0) {
                                 hasAResult = true;
                                 bandsListView.setBandsList(bands, query);
+
+                                storeQueryLocally(query);
                             }
                         }
                     }
@@ -99,6 +116,17 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                 bandsListView.noSearchResults(query);
             }
         });
+    }
+
+    /**
+     * @param query
+     */
+    private void storeQueryLocally(String query) {
+
+        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getContext(), SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
+        suggestions.saveRecentQuery(query, null);
+
+        SharedPrefUtility.getInstance().saveSetting(getContext(), ApplicationConstants.LATEST_SEARCHED_QUERY, query);
     }
     //endregion
 }

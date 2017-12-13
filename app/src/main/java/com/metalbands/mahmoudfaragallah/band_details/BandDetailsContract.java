@@ -12,7 +12,7 @@ import java.util.List;
 public interface BandDetailsContract {
 
     interface Presenter {
-        void getBandById(String bandId);
+        void getBandDetails();
     }
 
     interface View {
