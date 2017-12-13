@@ -26,7 +26,7 @@ public class BandsListAdapter extends RecyclerView.Adapter<BandsListAdapter.View
     private List<MetalBand> bands;
     //endregion
 
-    public BandsListAdapter(BandsSearchContract.View bandsListView) {
+    BandsListAdapter(BandsSearchContract.View bandsListView) {
         this.bands = new ArrayList<>();
         this.bandsListView = bandsListView;
     }

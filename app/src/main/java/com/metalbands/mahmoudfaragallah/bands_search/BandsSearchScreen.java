@@ -15,7 +15,6 @@ import com.metalbands.mahmoudfaragallah.R;
 import com.metalbands.mahmoudfaragallah.base.BaseActivity;
 import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
-import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
 import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
 import com.metalbands.mahmoudfaragallah.util.LogUtil;
 import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
@@ -23,7 +22,6 @@ import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
 import java.util.List;
 
 import butterknife.BindView;
-import retrofit2.Call;
 
 public class BandsSearchScreen extends BaseActivity implements BandsSearchContract.View {
 
@@ -39,7 +37,6 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region objects
-    private Call<SearchAPIResponse> currentSearchAPICall;
     private BandsListAdapter listAdapter;
     private BandsSearchContract.Presenter presenter;
     private BandsSearchContract.Router bandsListRouter;
@@ -161,12 +158,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
      * @param query
      */
     private void performSearch(String query) {
-
-        if (currentSearchAPICall != null) {
-            currentSearchAPICall.cancel();
-        }
-
-        currentSearchAPICall = presenter.searchBands(query);
+        presenter.searchBands(query);
     }
 
     /**

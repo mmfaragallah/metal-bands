@@ -23,7 +23,7 @@ public class BandDetailsPresenter implements BandDetailsContract.Presenter {
     //endregion
 
     //region constructors
-    public BandDetailsPresenter(BandDetailsContract.View bandDetailsView, File cacheDir) {
+    BandDetailsPresenter(BandDetailsContract.View bandDetailsView, File cacheDir) {
         this.cacheDir = cacheDir;
         this.bandDetailsView = bandDetailsView;
     }

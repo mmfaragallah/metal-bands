@@ -23,10 +23,11 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
     //region objects
     private File cacheDir;
     private BandsSearchContract.View bandsListView;
+    private Call<SearchAPIResponse> currentSearchAPICall;
     //endregion
 
     //region constructors
-    public BandsSearchPresenter(BandsSearchContract.View bandsListView, File cacheDir) {
+    BandsSearchPresenter(BandsSearchContract.View bandsListView, File cacheDir) {
         this.cacheDir = cacheDir;
         this.bandsListView = bandsListView;
     }
@@ -34,13 +35,35 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
 
     //region presenter callbacks
     @Override
-    public Call<SearchAPIResponse> searchBands(final String query) {
+    public void searchBands(String query) {
+
+        checkCurrentSearchAPICall();
+        performSearch(query);
+    }
+    //endregion
+
+    //region private methods
+
+    /**
+     *
+     */
+    private void checkCurrentSearchAPICall() {
+
+        if (currentSearchAPICall != null) {
+            currentSearchAPICall.cancel();
+        }
+    }
+
+    /**
+     * @param query
+     */
+    private void performSearch(final String query) {
 
         BandsService bandsService = RetrofitHandler.getInstance(cacheDir).createBandsService();
 
-        Call<SearchAPIResponse> call = bandsService.bandsSearch(query);
+        currentSearchAPICall = bandsService.bandsSearch(query);
 
-        call.enqueue(new Callback<SearchAPIResponse>() {
+        currentSearchAPICall.enqueue(new Callback<SearchAPIResponse>() {
             @Override
             public void onResponse(Call<SearchAPIResponse> call, Response<SearchAPIResponse> response) {
 
@@ -76,8 +99,6 @@ public class BandsSearchPresenter implements BandsSearchContract.Presenter {
                 bandsListView.noSearchResults(query);
             }
         });
-
-        return call;
     }
     //endregion
 }

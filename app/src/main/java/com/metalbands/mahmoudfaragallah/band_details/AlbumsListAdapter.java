@@ -25,9 +25,11 @@ public class AlbumsListAdapter extends RecyclerView.Adapter<AlbumsListAdapter.Vi
     private List<BandAlbum> albums;
     //endregion
 
-    public AlbumsListAdapter() {
+    //region constructor
+    AlbumsListAdapter() {
         this.albums = new ArrayList<>();
     }
+    //endregion
 
     /**
      * @param parent

@@ -1,11 +1,8 @@
 package com.metalbands.mahmoudfaragallah.bands_search;
 
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
-import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
 
 import java.util.List;
-
-import retrofit2.Call;
 
 /**
  * Created by Mahmoud on 08-12-2017.
@@ -14,7 +11,7 @@ import retrofit2.Call;
 public interface BandsSearchContract {
 
     interface Presenter {
-        Call<SearchAPIResponse> searchBands(String query);
+        void searchBands(String query);
     }
 
     interface View {

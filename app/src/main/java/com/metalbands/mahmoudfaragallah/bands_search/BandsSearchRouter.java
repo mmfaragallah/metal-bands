@@ -11,12 +11,17 @@ import com.metalbands.mahmoudfaragallah.band_details.BandDetailsScreen;
 
 public class BandsSearchRouter implements BandsSearchContract.Router {
 
-    Context context;
+    //region objects
+    private Context context;
+    //endregion
 
+    //region constructors
     BandsSearchRouter(Context context) {
         this.context = context;
     }
+    //endregion
 
+    //region Router callbacks
     @Override
     public void goToBandDetailsScreen(String bandId) {
 
@@ -24,4 +29,5 @@ public class BandsSearchRouter implements BandsSearchContract.Router {
         intent.putExtra(BandDetailsScreen.BAND_ID, bandId);
         context.startActivity(intent);
     }
+    //endregion
 }
