@@ -104,7 +104,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     protected void initializeObjects() {
         listAdapter = new BandsListAdapter(this);
         bandsListRouter = new BandsSearchRouter(this);
-        presenter = new BandsSearchPresenter(this, this);
+        presenter = new BandsSearchPresenter(this);
     }
 
     @Override

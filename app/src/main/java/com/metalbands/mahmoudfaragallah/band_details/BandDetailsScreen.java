@@ -58,7 +58,7 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     protected void initializeObjects() {
         listAdapter = new AlbumsListAdapter();
         progressDialog = new ProgressDialogFragment();
-        presenter = new BandDetailsPresenter(this, this);
+        presenter = new BandDetailsPresenter(this);
     }
 
     @Override

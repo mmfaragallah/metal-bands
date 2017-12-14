@@ -1,6 +1,5 @@
 package com.metalbands.mahmoudfaragallah.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -11,15 +10,11 @@ import android.content.Intent;
 public class BasePresenter {
 
     //region objects
-    private Activity context;
+    private BaseActivity context;
     //endregion
 
-    public BasePresenter() {
-
-    }
-
-    public BasePresenter(Activity context) {
-        this.context = context;
+    public BasePresenter(BaseContract.View context) {
+        this.context = (BaseActivity) context;
     }
 
     public Context getContext() {
@@ -29,5 +24,4 @@ public class BasePresenter {
     public Intent getIntent() {
         return context.getIntent();
     }
-
 }

@@ -1,10 +1,10 @@
 package com.metalbands.mahmoudfaragallah.bands_search;
 
-import android.app.Activity;
 import android.provider.SearchRecentSuggestions;
 
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
 import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
+import com.metalbands.mahmoudfaragallah.base.BaseContract;
 import com.metalbands.mahmoudfaragallah.base.BasePresenter;
 import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandSearchData;
@@ -32,9 +32,9 @@ public class BandsSearchPresenter extends BasePresenter implements BandsSearchCo
     //endregion
 
     //region constructors
-    BandsSearchPresenter(Activity context, BandsSearchContract.View bandsListView) {
-        super(context);
-        this.bandsListView = bandsListView;
+    BandsSearchPresenter(BaseContract.View bandsListView) {
+        super(bandsListView);
+        this.bandsListView = (BandsSearchContract.View) bandsListView;
     }
     //endregion
 

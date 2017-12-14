@@ -1,9 +1,8 @@
 package com.metalbands.mahmoudfaragallah.band_details;
 
-import android.app.Activity;
-
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
 import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
+import com.metalbands.mahmoudfaragallah.base.BaseContract;
 import com.metalbands.mahmoudfaragallah.base.BasePresenter;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandDetailsData;
 import com.metalbands.mahmoudfaragallah.model.responses.DetailsAPIResponse;
@@ -28,11 +27,11 @@ public class BandDetailsPresenter extends BasePresenter implements BandDetailsCo
     //endregion
 
     //region constructors
-    BandDetailsPresenter(Activity context, BandDetailsContract.View bandDetailsView) {
-        super(context);
+    BandDetailsPresenter(BaseContract.View bandDetailsView) {
+        super(bandDetailsView);
+        this.bandDetailsView = (BandDetailsContract.View) bandDetailsView;
 
         this.bandId = getIntent().getStringExtra(BandDetailsPresenter.BAND_ID);
-        this.bandDetailsView = bandDetailsView;
     }
     //endregion
 
