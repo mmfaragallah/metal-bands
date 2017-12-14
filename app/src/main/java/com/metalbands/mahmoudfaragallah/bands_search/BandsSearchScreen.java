@@ -67,6 +67,8 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
                 LogUtil.debug(CLASS_NAME, "[onQueryTextSubmit] query: " + query);
                 LogUtil.showToast(BandsSearchScreen.this, "[onQueryTextSubmit] query: " + query);
 
+                performSearch(query);
+
                 return false;
             }
 
