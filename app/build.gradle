@@ -23,9 +23,15 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
+    androidTestImplementation "com.android.support.test:runner:${RUNNER_VERSION}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${ESPRESSO_VERSION}"
+    compile "com.android.support.test.espresso:espresso-idling-resource:${ESPRESSO_VERSION}"
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:${ESPRESSO_VERSION}") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${ESPRESSO_VERSION}"
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
