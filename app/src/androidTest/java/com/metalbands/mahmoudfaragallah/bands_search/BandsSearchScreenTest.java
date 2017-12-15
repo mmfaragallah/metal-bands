@@ -1,13 +1,18 @@
 package com.metalbands.mahmoudfaragallah.bands_search;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.metalbands.mahmoudfaragallah.R;
 import com.metalbands.mahmoudfaragallah.RecyclerViewItemCountAssertion;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +27,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
  * Created by Mahmoud on 15-12-2017.
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class BandsSearchScreenTest {
+
+    private IdlingResource idlingResource;
 
     @Rule
     public ActivityTestRule<BandsSearchScreen> bandsSearchScreenTestRule =
@@ -36,8 +44,30 @@ public class BandsSearchScreenTest {
 
     }
 
+    @Before
+    public void registerIdlingResource() {
+
+        idlingResource = bandsSearchScreenTestRule.getActivity().getIdlingResource();
+        // register activity idling resource
+        IdlingRegistry
+                .getInstance()
+                .register(bandsSearchScreenTestRule.getActivity().getIdlingResource());
+    }
+
+
+    @After
+    public void unregisterIdlingResource() {
+        if (idlingResource != null) {
+            IdlingRegistry
+                    .getInstance()
+                    .unregister(idlingResource);
+        }
+    }
+
+
     @Test
-    public void searchView_loads() {
+    public void empty_results_test() {
+
         Espresso
                 .onView(ViewMatchers.withId(R.id.search_view))
                 .perform(click());

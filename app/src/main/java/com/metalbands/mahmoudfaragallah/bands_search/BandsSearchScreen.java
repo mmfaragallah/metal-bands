@@ -4,12 +4,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.metalbands.mahmoudfaragallah.IdlingResource.SimpleIdlingResource;
 import com.metalbands.mahmoudfaragallah.R;
 import com.metalbands.mahmoudfaragallah.base.BaseActivity;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
@@ -36,6 +41,10 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     private BandsListAdapter listAdapter;
     private BandsSearchContract.Presenter presenter;
     private BandsSearchContract.Router bandsListRouter;
+
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private SimpleIdlingResource idlingResource;
     //endregion
 
     //region AppCompatActivity callback
@@ -125,6 +134,10 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
         LogUtil.debug(CLASS_NAME, "[updateBandsList] bands: " + bands);
         listAdapter.updateBandsList(bands);
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(true);
+        }
     }
 
     @Override
@@ -148,10 +161,16 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region private method
+
     /**
      * @param query
      */
     private void performSearch(String query) {
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         presenter.searchBands(query);
     }
 
@@ -170,6 +189,21 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
             updateSearchViewText(query);
         }
+    }
+    //endregion
+
+    //region helping methods for testing
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new SimpleIdlingResource();
+        }
+        return idlingResource;
     }
     //endregion
 }
