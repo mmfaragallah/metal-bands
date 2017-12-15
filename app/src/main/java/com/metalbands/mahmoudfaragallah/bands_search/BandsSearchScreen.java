@@ -16,8 +16,14 @@ import android.view.MenuInflater;
 
 import com.metalbands.mahmoudfaragallah.IdlingResource.SimpleIdlingResource;
 import com.metalbands.mahmoudfaragallah.R;
+import com.metalbands.mahmoudfaragallah.backend.BandsService;
+import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
 import com.metalbands.mahmoudfaragallah.base.BaseActivity;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
+import com.metalbands.mahmoudfaragallah.storage_utility.search_history.SearchRecentProvider;
+import com.metalbands.mahmoudfaragallah.storage_utility.search_history.SearchRecentProviderImpl;
+import com.metalbands.mahmoudfaragallah.storage_utility.shared_prefs.SharedPrefImpl;
+import com.metalbands.mahmoudfaragallah.storage_utility.shared_prefs.SharedPrefUtility;
 import com.metalbands.mahmoudfaragallah.util.LogUtil;
 
 import java.util.List;
@@ -38,7 +44,10 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     //endregion
 
     //region objects
+    private BandsService bandsService;
     private BandsListAdapter listAdapter;
+    private SharedPrefUtility sharedPrefUtility;
+    private SearchRecentProvider searchRecentProvider;
     private BandsSearchContract.Presenter presenter;
     private BandsSearchContract.Router bandsListRouter;
 
@@ -115,7 +124,11 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
     protected void initializeObjects() {
         listAdapter = new BandsListAdapter(this);
         bandsListRouter = new BandsSearchRouter(this);
-        presenter = new BandsSearchPresenter(this);
+
+        sharedPrefUtility = SharedPrefImpl.getInstance(this);
+        searchRecentProvider = new SearchRecentProviderImpl(this);
+        bandsService = RetrofitHandler.getInstance(this.getCacheDir()).createBandsService();
+        presenter = new BandsSearchPresenter(this, bandsService, searchRecentProvider, sharedPrefUtility);
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.metalbands.mahmoudfaragallah.R;
+import com.metalbands.mahmoudfaragallah.backend.BandsService;
+import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
 import com.metalbands.mahmoudfaragallah.base.BaseActivity;
 import com.metalbands.mahmoudfaragallah.custom_views.KeyValueView;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandAlbum;
@@ -58,7 +60,9 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     protected void initializeObjects() {
         listAdapter = new AlbumsListAdapter();
         progressDialog = new ProgressDialogFragment();
-        presenter = new BandDetailsPresenter(this);
+
+        BandsService bandsService = RetrofitHandler.getInstance(this.getCacheDir()).createBandsService();
+        presenter = new BandDetailsPresenter(this, bandsService);
     }
 
     @Override
@@ -73,8 +77,12 @@ public class BandDetailsScreen extends BaseActivity implements BandDetailsContra
     }
     //endregion
 
-
     //region view callbacks
+    @Override
+    public String getBandId() {
+        return getIntent().getStringExtra(BandDetailsPresenter.BAND_ID);
+    }
+
     @Override
     public void showProgressDialog() {
         progressDialog.show(getSupportFragmentManager(), "tag");

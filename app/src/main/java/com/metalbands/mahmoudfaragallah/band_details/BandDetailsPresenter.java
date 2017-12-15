@@ -1,8 +1,6 @@
 package com.metalbands.mahmoudfaragallah.band_details;
 
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
-import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
-import com.metalbands.mahmoudfaragallah.base.BaseContract;
 import com.metalbands.mahmoudfaragallah.base.BasePresenter;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandDetailsData;
 import com.metalbands.mahmoudfaragallah.model.responses.DetailsAPIResponse;
@@ -24,14 +22,15 @@ public class BandDetailsPresenter extends BasePresenter implements BandDetailsCo
     //region objects
     private String bandId;
     private BandDetailsContract.View bandDetailsView;
+    private BandsService bandsService;
     //endregion
 
     //region constructors
-    BandDetailsPresenter(BaseContract.View bandDetailsView) {
-        super(bandDetailsView);
-        this.bandDetailsView = (BandDetailsContract.View) bandDetailsView;
+    BandDetailsPresenter(BandDetailsContract.View bandDetailsView, BandsService bandsService) {
 
-        this.bandId = getIntent().getStringExtra(BandDetailsPresenter.BAND_ID);
+        this.bandId = bandDetailsView.getBandId();
+        this.bandsService = bandsService;
+        this.bandDetailsView = bandDetailsView;
     }
     //endregion
 
@@ -40,8 +39,6 @@ public class BandDetailsPresenter extends BasePresenter implements BandDetailsCo
     public void getBandDetails() {
 
         bandDetailsView.showProgressDialog();
-
-        BandsService bandsService = RetrofitHandler.getInstance(getContext().getCacheDir()).createBandsService();
 
         Call<DetailsAPIResponse> call = bandsService.getBandDetails(bandId);
 

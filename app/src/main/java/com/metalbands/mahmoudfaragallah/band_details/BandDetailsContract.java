@@ -17,6 +17,8 @@ public interface BandDetailsContract {
 
     interface View {
 
+        String getBandId();
+
         void showProgressDialog();
 
         void dismissProgressDialog();

@@ -1,17 +1,13 @@
 package com.metalbands.mahmoudfaragallah.bands_search;
 
-import android.provider.SearchRecentSuggestions;
-
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
-import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;
-import com.metalbands.mahmoudfaragallah.base.BaseContract;
 import com.metalbands.mahmoudfaragallah.base.BasePresenter;
-import com.metalbands.mahmoudfaragallah.content_provider.SearchHistoryProvider;
 import com.metalbands.mahmoudfaragallah.model.data_models.BandSearchData;
 import com.metalbands.mahmoudfaragallah.model.data_models.MetalBand;
 import com.metalbands.mahmoudfaragallah.model.responses.SearchAPIResponse;
+import com.metalbands.mahmoudfaragallah.storage_utility.search_history.SearchRecentProvider;
+import com.metalbands.mahmoudfaragallah.storage_utility.shared_prefs.SharedPrefUtility;
 import com.metalbands.mahmoudfaragallah.util.ApplicationConstants;
-import com.metalbands.mahmoudfaragallah.util.SharedPrefUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +23,20 @@ import retrofit2.Response;
 public class BandsSearchPresenter extends BasePresenter implements BandsSearchContract.Presenter {
 
     //region objects
+    private BandsService bandsService;
+    private SharedPrefUtility sharedPrefUtility;
+    private SearchRecentProvider searchRecentProvider;
     private BandsSearchContract.View bandsListView;
     private Call<SearchAPIResponse> currentSearchAPICall;
     //endregion
 
     //region constructors
-    BandsSearchPresenter(BaseContract.View bandsListView) {
-        super(bandsListView);
-        this.bandsListView = (BandsSearchContract.View) bandsListView;
+    BandsSearchPresenter(BandsSearchContract.View bandsListView, BandsService bandsService, SearchRecentProvider searchRecentProvider, SharedPrefUtility sharedPrefUtility) {
+
+        this.searchRecentProvider = searchRecentProvider;
+        this.bandsService = bandsService;
+        this.bandsListView = bandsListView;
+        this.sharedPrefUtility = sharedPrefUtility;
     }
     //endregion
 
@@ -49,7 +51,7 @@ public class BandsSearchPresenter extends BasePresenter implements BandsSearchCo
     @Override
     public void checkLatestSearchedQuery() {
 
-        String latestSearchedQuery = SharedPrefUtility.getInstance().getSettingString(getContext(), ApplicationConstants.LATEST_SEARCHED_QUERY);
+        String latestSearchedQuery = sharedPrefUtility.getSettingString(ApplicationConstants.LATEST_SEARCHED_QUERY);
 
         if (latestSearchedQuery != null) {
             bandsListView.updateSearchViewText(latestSearchedQuery);
@@ -73,8 +75,6 @@ public class BandsSearchPresenter extends BasePresenter implements BandsSearchCo
      * @param query
      */
     private void performSearch(final String query) {
-
-        BandsService bandsService = RetrofitHandler.getInstance(getContext().getCacheDir()).createBandsService();
 
         currentSearchAPICall = bandsService.bandsSearch(query);
 
@@ -123,10 +123,8 @@ public class BandsSearchPresenter extends BasePresenter implements BandsSearchCo
      */
     private void storeQueryLocally(String query) {
 
-        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getContext(), SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
-        suggestions.saveRecentQuery(query, null);
-
-        SharedPrefUtility.getInstance().saveSetting(getContext(), ApplicationConstants.LATEST_SEARCHED_QUERY, query);
+        searchRecentProvider.saveRecentQuery(query);
+        sharedPrefUtility.saveSetting(ApplicationConstants.LATEST_SEARCHED_QUERY, query);
     }
     //endregion
 }

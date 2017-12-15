@@ -1,4 +1,4 @@
-package com.metalbands.mahmoudfaragallah.util;
+package com.metalbands.mahmoudfaragallah.storage_utility.shared_prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,35 +6,42 @@ import android.content.SharedPreferences;
 /**
  * Created by Mahmoud on 12-12-2017.
  */
-public class SharedPrefUtility {
+public class SharedPrefImpl implements SharedPrefUtility {
 
     //region constants
     private static final String PREFS_NAME = "MetalBandsPrefs";
     //endregion
 
     //region private members
-    private static SharedPrefUtility instance;
+    private SharedPreferences settings;
+    private static SharedPrefImpl instance;
+    //endregion
+
+    //region constructors
+    private SharedPrefImpl(Context context) {
+        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    }
     //endregion
 
     //region public methods
+
     /**
      * @return
      */
-    public static SharedPrefUtility getInstance() {
+    public static SharedPrefImpl getInstance(Context context) {
         if (instance == null) {
-            instance = new SharedPrefUtility();
+            instance = new SharedPrefImpl(context);
         }
         return instance;
     }
 
     /**
-     * @param context
      * @param key
      * @param value
      */
-    public void saveSetting(Context context, String key, Object value) {
+    @Override
+    public void saveSetting(String key, Object value) {
 
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
 
         if (value instanceof String) {
@@ -50,65 +57,59 @@ public class SharedPrefUtility {
     }
 
     /**
-     * @param context
      * @param key
      * @return
      */
-    public String getSettingString(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public String getSettingString(String key) {
         return settings.getString(key, null);
     }
 
     /**
-     * @param context
      * @param key
      * @param defaultValue
      * @return
      */
-    public boolean getSettingBoolean(Context context, String key, boolean defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public boolean getSettingBoolean(String key, boolean defaultValue) {
         return settings.getBoolean(key, defaultValue);
     }
 
     /**
-     * @param context
      * @param key
      * @param defaultValue
      * @return
      */
-    public int getSettingInteger(Context context, String key, int defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public int getSettingInteger(String key, int defaultValue) {
         return settings.getInt(key, defaultValue);
     }
 
     /**
-     * @param context
      * @param key
      * @param defaultValue
      * @return
      */
-    public long getSettingLong(Context context, String key, long defaultValue) {
-
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public long getSettingLong(String key, long defaultValue) {
         return settings.getLong(key, defaultValue);
     }
 
     /**
-     * @param context
      * @param key
      */
-    public void removeSetting(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public void removeSetting(String key) {
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(key);
         editor.apply();
     }
 
     /**
-     * @param context
+     *
      */
-    public void clearAllData(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    @Override
+    public void clearAllData() {
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
         editor.apply();
