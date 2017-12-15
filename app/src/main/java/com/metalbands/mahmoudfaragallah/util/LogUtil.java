@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class LogUtil {
 
-    private static final boolean enableToast = true;
+    private static final boolean enableToast = false;
 
     /**
      * @param className
