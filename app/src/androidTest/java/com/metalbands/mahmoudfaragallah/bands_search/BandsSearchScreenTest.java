@@ -3,6 +3,7 @@ package com.metalbands.mahmoudfaragallah.bands_search;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -21,6 +22,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -57,7 +59,6 @@ public class BandsSearchScreenTest {
                 .register(bandsSearchScreenTestRule.getActivity().getIdlingResource());
     }
 
-
     @After
     public void unregisterIdlingResource() {
         if (idlingResource != null) {
@@ -66,7 +67,6 @@ public class BandsSearchScreenTest {
                     .unregister(idlingResource);
         }
     }
-
 
     @Test
     public void empty_results_test() {
@@ -102,14 +102,44 @@ public class BandsSearchScreenTest {
                 .onView(ViewMatchers.withId(R.id.bands_list))
                 .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
 
-        Espresso.
-                onView(withText("Trinity Test")).check(matches(isDisplayed()));
+        Espresso
+                .onView(ViewMatchers.withId(R.id.bands_list))
+                .check(matches(hasDescendant(withText("Trinity Test"))))
+                .check(matches(isDisplayed()));
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.bands_list))
+                .check(matches(hasDescendant(withText("United States"))))
+                .check(matches(isDisplayed()));
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.bands_list))
+                .check(matches(hasDescendant(withText("Progressive/Thrash/Death Metal"))))
+                .check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void click_on_specific_band_test() {
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.search_view))
+                .perform(click());
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.search_src_text))
+                .perform(typeText("trinity test"), closeSoftKeyboard());
+
+        // checking recycle view children count without using IdlingResource
+        Espresso
+                .onView(ViewMatchers.withId(R.id.bands_list))
+                .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
 
         Espresso.
-                onView(withText("United States")).check(matches(isDisplayed()));
-
-        Espresso.
-                onView(withText("Progressive/Thrash/Death Metal")).check(matches(isDisplayed()));
+                onView(ViewMatchers.withId(R.id.bands_list))
+                .perform(
+                        RecyclerViewActions.actionOnItem(
+                                hasDescendant(withText("Progressive/Thrash/Death Metal")), click()));
 
     }
 }
