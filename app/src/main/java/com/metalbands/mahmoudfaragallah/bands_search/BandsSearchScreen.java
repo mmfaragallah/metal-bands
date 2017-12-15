@@ -14,7 +14,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import com.metalbands.mahmoudfaragallah.IdlingResource.SimpleIdlingResource;
+import com.metalbands.mahmoudfaragallah.idling_resources.SimpleIdlingResource;
 import com.metalbands.mahmoudfaragallah.R;
 import com.metalbands.mahmoudfaragallah.backend.BandsService;
 import com.metalbands.mahmoudfaragallah.backend.RetrofitHandler;

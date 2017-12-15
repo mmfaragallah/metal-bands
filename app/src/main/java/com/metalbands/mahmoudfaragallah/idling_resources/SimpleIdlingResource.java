@@ -1,4 +1,4 @@
-package com.metalbands.mahmoudfaragallah.IdlingResource;
+package com.metalbands.mahmoudfaragallah.idling_resources;
 
 import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingResource;
