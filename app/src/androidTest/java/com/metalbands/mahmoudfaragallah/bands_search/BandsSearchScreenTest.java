@@ -21,7 +21,10 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.greaterThan;
 
 /**
  * Created by Mahmoud on 15-12-2017.
@@ -80,6 +83,33 @@ public class BandsSearchScreenTest {
         Espresso
                 .onView(ViewMatchers.withId(R.id.bands_list))
                 .check(new RecyclerViewItemCountAssertion(0));
+
+    }
+
+    @Test
+    public void search_for_specific_band_test() {
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.search_view))
+                .perform(click());
+
+        Espresso
+                .onView(ViewMatchers.withId(R.id.search_src_text))
+                .perform(typeText("trinity test"), closeSoftKeyboard());
+
+        // checking recycle view children count without using IdlingResource
+        Espresso
+                .onView(ViewMatchers.withId(R.id.bands_list))
+                .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
+
+        Espresso.
+                onView(withText("Trinity Test")).check(matches(isDisplayed()));
+
+        Espresso.
+                onView(withText("United States")).check(matches(isDisplayed()));
+
+        Espresso.
+                onView(withText("Progressive/Thrash/Death Metal")).check(matches(isDisplayed()));
 
     }
 }
