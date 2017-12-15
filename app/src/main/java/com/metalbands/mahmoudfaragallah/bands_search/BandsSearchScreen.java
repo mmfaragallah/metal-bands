@@ -55,7 +55,7 @@ public class BandsSearchScreen extends BaseActivity implements BandsSearchContra
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search_view).getActionView();
 //        searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
